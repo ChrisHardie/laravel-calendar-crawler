@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace ChrisHardie\CalendarCrawler\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class CalendarCrawlerCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-calendar-crawler';
 
     public $description = 'My command';
 
