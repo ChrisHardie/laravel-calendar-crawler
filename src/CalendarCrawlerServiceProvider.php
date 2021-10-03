@@ -2,9 +2,9 @@
 
 namespace ChrisHardie\CalendarCrawler;
 
+use ChrisHardie\CalendarCrawler\Commands\CalendarCrawlerCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use ChrisHardie\CalendarCrawler\Commands\CalendarCrawlerCommand;
 
 class CalendarCrawlerServiceProvider extends PackageServiceProvider
 {
