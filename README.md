@@ -16,13 +16,13 @@ composer require chrishardie/laravel-calendar-crawler
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --provider="ChrisHardie\CalendarCrawler\CalendarCrawlerServiceProvider" --tag="laravel-calendar-crawler-migrations"
+php artisan vendor:publish --provider="ChrisHardie\CalendarCrawler\CalendarCrawlerServiceProvider" --tag="calendar-crawler-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="ChrisHardie\CalendarCrawler\CalendarCrawlerServiceProvider" --tag="laravel-calendar-crawler-config"
+php artisan vendor:publish --provider="ChrisHardie\CalendarCrawler\CalendarCrawlerServiceProvider" --tag="calendar-crawler-config"
 ```
 
 This is the contents of the published config file:

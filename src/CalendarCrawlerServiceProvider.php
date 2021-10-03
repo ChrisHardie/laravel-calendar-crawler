@@ -19,7 +19,7 @@ class CalendarCrawlerServiceProvider extends PackageServiceProvider
             ->name('laravel-calendar-crawler')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_laravel-calendar-crawler_table')
+            ->hasMigrations(['create_events_table', 'create_calendar_sources_table'])
             ->hasCommand(CalendarCrawlerCommand::class);
     }
 }
