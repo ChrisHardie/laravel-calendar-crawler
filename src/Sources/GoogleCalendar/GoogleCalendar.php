@@ -2,9 +2,9 @@
 
 namespace ChrisHardie\CalendarCrawler\Sources\GoogleCalendar;
 
-use ChrisHardie\CalendarCrawler\Sources\BaseSource;
-use ChrisHardie\CalendarCrawler\Models\CalendarSource;
 use ChrisHardie\CalendarCrawler\Exceptions\SourceNotCrawlable;
+use ChrisHardie\CalendarCrawler\Models\CalendarSource;
+use ChrisHardie\CalendarCrawler\Sources\BaseSource;
 use Google_Client;
 use Google_Service_Calendar;
 use Illuminate\Support\Carbon;
