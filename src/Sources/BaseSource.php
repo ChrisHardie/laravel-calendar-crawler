@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 
 abstract class BaseSource
 {
-    abstract public function getEvents(Source $source): \Illuminate\Database\Eloquent\Collection;
+//    abstract public function getEvents(Source $source): \Illuminate\Database\Eloquent\Collection;
 
     /**
      * @param Source $source

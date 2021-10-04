@@ -21,11 +21,13 @@ return new class extends Migration
             $table->string('home_url');
             $table->string('location');
             $table->json('meta')->nullable();
-            $table->timestamp('last_checked_at')->nullable();
+            $table->integer('frequency')->nullable();
+            $table->timestamp('last_check_at')->nullable();
             $table->timestamp('last_success_at')->nullable();
             $table->timestamp('last_fail_at')->nullable();
             $table->timestamp('next_check_after')->nullable();
             $table->integer('fail_count')->default(0);
+            $table->boolean('active')->default(true);
             $table->boolean('admin_pause_checks')->default(false);
         });
     }

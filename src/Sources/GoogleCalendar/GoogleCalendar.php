@@ -2,14 +2,17 @@
 
 namespace ChrisHardie\CalendarCrawler\Sources\GoogleCalendar;
 
+use ChrisHardie\CalendarCrawler\Models\Event;
 use ChrisHardie\CalendarCrawler\Sources\BaseSource;
 use ChrisHardie\CalendarCrawler\Models\CalendarSource;
+use ChrisHardie\CalendarCrawler\Exceptions\SourceNotCrawlable;
 use Google_Client;
 use Google_Service_Calendar;
+use Illuminate\Support\Carbon;
 
 class GoogleCalendar extends BaseSource
 {
-    public function getEvents(CalendarSource $source): \Illuminate\Database\Eloquent\Collection
+    public function getEvents(CalendarSource $source)
     {
         $client = $this->getClient();
 
@@ -17,28 +20,36 @@ class GoogleCalendar extends BaseSource
         // https://developers.google.com/calendar/api/quickstart/php
         $calendarId = $source->location;
         $optParams = array(
-            'maxResults' => 10,
             'orderBy' => 'startTime',
             'singleEvents' => true,
             'timeMin' => date('c'),
+            'timeMax' => Carbon::now()->addDays(30)->format('c'),
         );
         $results = $client->events->listEvents($calendarId, $optParams);
         $events = $results->getItems();
 
         if (empty($events)) {
-            print "No upcoming events found.\n";
+            throw new SourceNotCrawlable('No events found', 0, null, $source);
         } else {
-            print "Upcoming events:\n";
             foreach ($events as $event) {
-                $start = $event->start->dateTime;
-                if (empty($start)) {
-                    $start = $event->start->date;
-                }
-                printf("%s (%s)\n", $event->getSummary(), $start);
+//                dd($event->start->getDateTime());
+                $source->events()->updateOrCreate(
+                    [
+                        'source_internal_id' => $event->getICalUID()
+                    ],
+                    [
+                        'title' => $event->getSummary(),
+                        'start_timestamp' => $event->start->getDateTime(),
+                        'end_timestamp' => $event->end->getDateTime(),
+                        'description' => $event->getDescription(),
+                        'address' => $event->getLocation(),
+                        'status' => $event->getStatus(),
+                        'last_crawled_at' => Carbon::now(),
+                    ]
+                );
             }
         }
     }
-
 
     private function getClient()
     {
