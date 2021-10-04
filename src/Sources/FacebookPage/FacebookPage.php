@@ -23,7 +23,7 @@ class FacebookPage extends BaseSource
         $userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'; // @phpcs:ignore
 
         $fbSourceParams = [
-            'id'    => $source->location,
+            'id' => $source->location,
             'scale' => 1,
             'count' => 3,
         ];
@@ -57,6 +57,7 @@ class FacebookPage extends BaseSource
                 // Check to make sure it was a valid payload
                 if (empty($event->id)) {
                     Log::debug('No valid event info found in a result node');
+
                     continue;
                 }
 
@@ -98,18 +99,18 @@ class FacebookPage extends BaseSource
             return null;
         }
 
-        $event_text_patterns     = array(
+        $event_text_patterns = [
             '/^(.*?)( AND \d+ MORE)?$/',
             '/ AT /',
             '/UNK$/',
-        );
-        $event_text_replacements = array(
+        ];
+        $event_text_replacements = [
             '\1',
             ' ',
             '-7',
-        );
+        ];
 
-        $event_start_text      = preg_replace(
+        $event_start_text = preg_replace(
             $event_text_patterns,
             $event_text_replacements,
             $event->day_time_sentence
@@ -117,6 +118,7 @@ class FacebookPage extends BaseSource
         $event_start_timestamp = strtotime($event_start_text);
         if (false === $event_start_timestamp) {
             Log::debug('Error trying to convert FB start text to timestamp for event ID ' . $event->id);
+
             return null;
         }
 
@@ -142,19 +144,19 @@ class FacebookPage extends BaseSource
     private static function getBaseParams(): array
     {
         return [
-            'MIME Type'                => 'application/x-www-form-urlencoded',
-            '__a'                      => '1',
-            '__req'                    => 'g',
-            '__beoa'                   => '0',
-            '__pc'                     => 'EXP2:comet_pkg',
-            '__bhv'                    => '2',
-            'dpr'                      => '1',
-            '__ccg'                    => 'EXCELLENT',
-            '__comet_req'              => '1',
-            'fb_api_caller_class'      => 'RelayModern',
+            'MIME Type' => 'application/x-www-form-urlencoded',
+            '__a' => '1',
+            '__req' => 'g',
+            '__beoa' => '0',
+            '__pc' => 'EXP2:comet_pkg',
+            '__bhv' => '2',
+            'dpr' => '1',
+            '__ccg' => 'EXCELLENT',
+            '__comet_req' => '1',
+            'fb_api_caller_class' => 'RelayModern',
             'fb_api_req_friendly_name' => 'PagesCometEventsUpcomingSectionPaginationQuery',
-            'server_timestamps'        => 'true',
-            'doc_id'                   => '3818743474878187',
+            'server_timestamps' => 'true',
+            'doc_id' => '3818743474878187',
         ];
     }
 }
