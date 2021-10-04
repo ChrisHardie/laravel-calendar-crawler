@@ -6,6 +6,7 @@ use ChrisHardie\CalendarCrawler\Models\CalendarSource;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class CalendarCrawlerCommand extends Command
 {
@@ -56,7 +57,22 @@ class CalendarCrawlerCommand extends Command
 
                     try {
                         $source_class->getEvents($source);
-                        $source->last_success_at = Carbon::now();
+
+                        if (0 < $source->fail_count) {
+                            Log::info(sprintf(
+                                'Updating events for source `%s` was successful after %d %s.',
+                                $source->name,
+                                $source->fail_count,
+                                Str::plural('failure', $source->fail_count)
+                            ));
+                        }
+
+                        $source->update([
+                            'last_success_at' => Carbon::now(),
+                            'fail_count' => 0,
+                            'next_check_after' => null,
+                        ]);
+
                         $source->save();
                     } catch (\Exception $e) {
                         report($e);
