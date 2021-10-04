@@ -2,7 +2,6 @@
 
 namespace ChrisHardie\CalendarCrawler\Sources\GoogleCalendar;
 
-use ChrisHardie\CalendarCrawler\Models\Event;
 use ChrisHardie\CalendarCrawler\Sources\BaseSource;
 use ChrisHardie\CalendarCrawler\Models\CalendarSource;
 use ChrisHardie\CalendarCrawler\Exceptions\SourceNotCrawlable;
@@ -12,12 +11,17 @@ use Illuminate\Support\Carbon;
 
 class GoogleCalendar extends BaseSource
 {
-    public function getEvents(CalendarSource $source)
+    /**
+     * Fetch a public Google calendar's events and create events from them.
+     * https://developers.google.com/calendar/api/quickstart/php
+     *
+     * @param CalendarSource $source
+     * @throws SourceNotCrawlable
+     */
+    public function getEvents(CalendarSource $source): void
     {
         $client = $this->getClient();
 
-        // Example: Print the next 10 events on the user's calendar.
-        // https://developers.google.com/calendar/api/quickstart/php
         $calendarId = $source->location;
         $optParams = array(
             'orderBy' => 'startTime',
@@ -25,22 +29,29 @@ class GoogleCalendar extends BaseSource
             'timeMin' => date('c'),
             'timeMax' => Carbon::now()->addDays(30)->format('c'),
         );
-        $results = $client->events->listEvents($calendarId, $optParams);
-        $events = $results->getItems();
+
+        try {
+            $results = $client->events->listEvents($calendarId, $optParams);
+            $events = $results->getItems();
+        } catch (\Exception $e) {
+            throw new SourceNotCrawlable('Cannot fetch events from Google', 0, null, $source);
+        }
+
 
         if (empty($events)) {
             throw new SourceNotCrawlable('No events found', 0, null, $source);
         } else {
             foreach ($events as $event) {
-//                dd($event->start->getDateTime());
                 $source->events()->updateOrCreate(
                     [
                         'source_internal_id' => $event->getICalUID()
                     ],
                     [
                         'title' => $event->getSummary(),
-                        'start_timestamp' => $event->start->getDateTime(),
-                        'end_timestamp' => $event->end->getDateTime(),
+                        'start_timestamp' => Carbon::createFromFormat('c', $event->start->getDateTime())
+                            ->setTimezone('UTC'),
+                        'end_timestamp' => Carbon::createFromFormat('c', $event->end->getDateTime())
+                            ->setTimezone('UTC'),
                         'description' => $event->getDescription(),
                         'address' => $event->getLocation(),
                         'status' => $event->getStatus(),
@@ -51,7 +62,11 @@ class GoogleCalendar extends BaseSource
         }
     }
 
-    private function getClient()
+    /**
+     * Instantiate a Google Calendar Service API client
+     * @return Google_Service_Calendar
+     */
+    private function getClient(): Google_Service_Calendar
     {
         $client = new Google_Client();
         $client->setApplicationName("Client_Library_Examples");

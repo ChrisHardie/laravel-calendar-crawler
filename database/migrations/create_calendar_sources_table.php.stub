@@ -26,6 +26,7 @@ return new class extends Migration
             $table->timestamp('last_success_at')->nullable();
             $table->timestamp('last_fail_at')->nullable();
             $table->timestamp('next_check_after')->nullable();
+            $table->text('last_fail_reason')->nullable();
             $table->integer('fail_count')->default(0);
             $table->boolean('active')->default(true);
             $table->boolean('admin_pause_checks')->default(false);

@@ -42,10 +42,13 @@ class CalendarSource extends Model
     public function scopeCheckable(Builder $query, string $frequency = '')
     {
         // Set default frequency to Source-specific or configured amount
-        $check_frequency_minutes = (! empty($this->frequency)) ? (int) $this->frequency : config('calendar-crawler.default_update_frequency');
+        $check_frequency_minutes = ! empty($this->frequency)
+            ? (int) $this->frequency
+            : config('calendar-crawler.default_update_frequency');
 
         $query
-            ->where('active', true);
+            ->where('active', true)
+            ->where('admin_pause_checks', false);
 
         $query->where(function ($query) use ($check_frequency_minutes) {
             $query
