@@ -23,7 +23,7 @@ class GoogleCalendar extends BaseSource
         $client = $this->getClient();
 
         $calendarId = $source->location;
-        $optParams = array(
+        $optParams = [
             'orderBy' => 'startTime',
             'singleEvents' => true,
             'timeMin' => date('c'),
@@ -37,14 +37,13 @@ class GoogleCalendar extends BaseSource
             throw new SourceNotCrawlable('Cannot fetch events from Google', 0, null, $source);
         }
 
-
         if (empty($events)) {
             throw new SourceNotCrawlable('No events found', 0, null, $source);
         } else {
             foreach ($events as $event) {
                 $source->events()->updateOrCreate(
                     [
-                        'source_internal_id' => $event->getICalUID()
+                        'source_internal_id' => $event->getICalUID(),
                     ],
                     [
                         'title' => $event->getSummary(),
@@ -71,6 +70,7 @@ class GoogleCalendar extends BaseSource
         $client = new Google_Client();
         $client->setApplicationName("Client_Library_Examples");
         $client->setDeveloperKey(config('calendar-crawler.auth.google.api_key'));
+
         return new Google_Service_Calendar($client);
     }
 }
