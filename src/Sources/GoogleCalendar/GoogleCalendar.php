@@ -28,7 +28,7 @@ class GoogleCalendar extends BaseSource
             'singleEvents' => true,
             'timeMin' => date('c'),
             'timeMax' => Carbon::now()->addDays(30)->format('c'),
-        );
+        ];
 
         try {
             $results = $client->events->listEvents($calendarId, $optParams);
