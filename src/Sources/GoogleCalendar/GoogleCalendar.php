@@ -2,10 +2,9 @@
 
 namespace ChrisHardie\CalendarCrawler\Sources\GoogleCalendar;
 
-use ChrisHardie\CalendarCrawler\Models\Event;
-use ChrisHardie\CalendarCrawler\Sources\BaseSource;
-use ChrisHardie\CalendarCrawler\Models\CalendarSource;
 use ChrisHardie\CalendarCrawler\Exceptions\SourceNotCrawlable;
+use ChrisHardie\CalendarCrawler\Models\CalendarSource;
+use ChrisHardie\CalendarCrawler\Sources\BaseSource;
 use Google_Client;
 use Google_Service_Calendar;
 use Illuminate\Support\Carbon;
@@ -19,12 +18,12 @@ class GoogleCalendar extends BaseSource
         // Example: Print the next 10 events on the user's calendar.
         // https://developers.google.com/calendar/api/quickstart/php
         $calendarId = $source->location;
-        $optParams = array(
+        $optParams = [
             'orderBy' => 'startTime',
             'singleEvents' => true,
             'timeMin' => date('c'),
             'timeMax' => Carbon::now()->addDays(30)->format('c'),
-        );
+        ];
         $results = $client->events->listEvents($calendarId, $optParams);
         $events = $results->getItems();
 
@@ -35,7 +34,7 @@ class GoogleCalendar extends BaseSource
 //                dd($event->start->getDateTime());
                 $source->events()->updateOrCreate(
                     [
-                        'source_internal_id' => $event->getICalUID()
+                        'source_internal_id' => $event->getICalUID(),
                     ],
                     [
                         'title' => $event->getSummary(),
@@ -56,6 +55,7 @@ class GoogleCalendar extends BaseSource
         $client = new Google_Client();
         $client->setApplicationName("Client_Library_Examples");
         $client->setDeveloperKey(config('calendar-crawler.auth.google.api_key'));
+
         return new Google_Service_Calendar($client);
     }
 }

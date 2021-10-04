@@ -31,13 +31,14 @@ class CalendarCrawlerCommand extends Command
             $sources = CalendarSource::checkable()->orderBy('last_check_at', 'asc')->get();
         }
 
-        $source_class_base_paths = array(
+        $source_class_base_paths = [
             "ChrisHardie\CalendarCrawler\Sources\\",
             "App\CalendarSources\\",
-        );
+        ];
 
         if (! $sources) {
             Log::debug('No sources found for checking');
+
             return;
         }
 
