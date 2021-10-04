@@ -24,6 +24,7 @@ class Event extends Model
         'status',
         'attachment_url',
         'last_crawled_at',
+        'url',
     ];
 
     protected $dates = [

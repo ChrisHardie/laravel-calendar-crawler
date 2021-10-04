@@ -27,6 +27,10 @@ class CalendarSource extends Model
         'next_check_after',
     ];
 
+    protected $casts = [
+        'meta' => 'array',
+    ];
+
     public function events(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Event::class);
