@@ -2,9 +2,9 @@
 
 namespace ChrisHardie\CalendarCrawler\Tests;
 
+use ChrisHardie\CalendarCrawler\CalendarCrawlerServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use ChrisHardie\CalendarCrawler\CalendarCrawlerServiceProvider;
 
 class TestCase extends Orchestra
 {
