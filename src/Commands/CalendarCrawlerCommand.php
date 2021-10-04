@@ -72,8 +72,6 @@ class CalendarCrawlerCommand extends Command
                             'fail_count' => 0,
                             'next_check_after' => null,
                         ]);
-
-                        $source->save();
                     } catch (\Exception $e) {
                         report($e);
                     }
