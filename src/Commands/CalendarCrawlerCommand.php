@@ -48,7 +48,6 @@ class CalendarCrawlerCommand extends Command
         foreach ($sources as $source) {
             foreach ($source_class_base_paths as $base_path) {
                 $source_class_path = $base_path . $source->type . '\\' . $source->type;
-                Log::debug('Looking for path: ' . $source_class_path);
                 if (class_exists($source_class_path)) {
                     $source_class = new $source_class_path();
 

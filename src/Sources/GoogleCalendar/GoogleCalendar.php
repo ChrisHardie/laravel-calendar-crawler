@@ -52,6 +52,7 @@ class GoogleCalendar extends BaseSource
                         'end_timestamp' => Carbon::createFromFormat('c', $event->end->getDateTime())
                             ->setTimezone('UTC'),
                         'description' => $event->getDescription(),
+                        'url' => $event->getHtmlLink(),
                         'address' => $event->getLocation(),
                         'status' => $event->getStatus(),
                         'last_crawled_at' => Carbon::now(),
