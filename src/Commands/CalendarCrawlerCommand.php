@@ -27,7 +27,7 @@ class CalendarCrawlerCommand extends Command
     public function handle()
     {
         if (! empty($this->argument('id'))) {
-            $sources = CalendarSource::find($this->argument('id'))->get();
+            $sources = CalendarSource::where('id', $this->argument('id'))->get();
         } else {
             $sources = CalendarSource::checkable()->orderBy('last_check_at', 'asc')->get();
         }
