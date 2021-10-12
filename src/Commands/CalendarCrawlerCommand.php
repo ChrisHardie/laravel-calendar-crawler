@@ -67,11 +67,11 @@ class CalendarCrawlerCommand extends Command
                             ));
                         }
 
-                        $source->update([
-                            'last_success_at' => Carbon::now(),
-                            'fail_count' => 0,
-                            'next_check_after' => null,
-                        ]);
+                        $source->last_success_at = Carbon::now();
+                        $source->fail_count = 0;
+                        $source->next_check_after = null;
+
+                        $source->save();
                     } catch (\Exception $e) {
                         report($e);
                     }

@@ -24,6 +24,11 @@ class Event extends Model
         'status',
         'attachment_url',
         'last_crawled_at',
+        'last_success_at',
+        'last_fail_at',
+        'last_fail_reason',
+        'next_check_after',
+        'fail_count',
         'url',
     ];
 
@@ -31,6 +36,9 @@ class Event extends Model
         'start_timestamp',
         'end_timestamp',
         'last_crawled_at',
+        'last_success_at',
+        'last_fail_at',
+        'next_check_after',
     ];
 
     public function calendarSource(): \Illuminate\Database\Eloquent\Relations\BelongsTo
