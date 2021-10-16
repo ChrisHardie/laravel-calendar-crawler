@@ -28,6 +28,10 @@ class CalendarController
                 $ical_event->endsAt($event->end_timestamp);
             }
 
+            if ($event->all_day) {
+                $ical_event->fullDay();
+            }
+
             if (! empty($event->url)) {
                 $ical_event->appendProperty(TextProperty::create('URL;VALUE=URI', $event->url));
             }

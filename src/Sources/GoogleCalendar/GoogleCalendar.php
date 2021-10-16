@@ -8,6 +8,7 @@ use ChrisHardie\CalendarCrawler\Sources\BaseSource;
 use Google_Client;
 use Google_Service_Calendar;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class GoogleCalendar extends BaseSource
 {
@@ -41,16 +42,33 @@ class GoogleCalendar extends BaseSource
             throw new SourceNotCrawlable('No events found', 0, null, $source);
         } else {
             foreach ($events as $event) {
+                if (! empty($event->start->getDateTime()) && ! empty($event->end->getDateTime())) {
+                    $start_timestamp = Carbon::createFromFormat('c', $event->start->getDateTime())
+                        ->setTimezone('UTC');
+                    $end_timestamp = Carbon::createFromFormat('c', $event->end->getDateTime())
+                        ->setTimezone('UTC');
+                    $all_day = null;
+                } elseif (! empty($event->start->getDate()) && ! empty($event->end->getDate())) {
+                    $start_timestamp = Carbon::createFromFormat('Y-m-d', $event->start->getDate())
+                        ->startOfDay();
+                    $end_timestamp = Carbon::createFromFormat('Y-m-d', $event->end->getDate())
+                        ->endOfDay();
+                    $all_day = true;
+                } else {
+                    Log::warning('Google Event ' . $event->getICalUID() . ' has no valid start/end days/times, skipping.');
+                    continue;
+                }
+
+
                 $source->events()->updateOrCreate(
                     [
                         'source_internal_id' => $event->getICalUID(),
                     ],
                     [
                         'title' => $event->getSummary(),
-                        'start_timestamp' => Carbon::createFromFormat('c', $event->start->getDateTime())
-                            ->setTimezone('UTC'),
-                        'end_timestamp' => Carbon::createFromFormat('c', $event->end->getDateTime())
-                            ->setTimezone('UTC'),
+                        'start_timestamp' => $start_timestamp,
+                        'end_timestamp' => $end_timestamp,
+                        'all_day' => $all_day,
                         'description' => $event->getDescription(),
                         'url' => $event->getHtmlLink(),
                         'address' => $event->getLocation(),
