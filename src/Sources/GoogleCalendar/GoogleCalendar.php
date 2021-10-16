@@ -56,6 +56,7 @@ class GoogleCalendar extends BaseSource
                     $all_day = true;
                 } else {
                     Log::warning('Google Event ' . $event->getICalUID() . ' has no valid start/end days/times, skipping.');
+
                     continue;
                 }
 
