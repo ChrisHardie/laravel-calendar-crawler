@@ -16,5 +16,4 @@ return [
             'api_key' => env('GOOGLE_CAL_API_KEY'),
         ]
     ],
-
 ];

@@ -29,8 +29,53 @@ This is the contents of the published config file:
 
 ```php
 return [
+    'default_update_frequency' => 720, // Refresh every 12 hours
+
+    'calendar_name' => 'Calendar of Events',
+
+    'calendar_description' => 'A calendar of events from various sources.',
+
+    // Default URL of calendar ICS feed
+    'stream_url' => '/calendar/calendar.ics',
+
+    // Source-specific authentication information
+    'auth' => [
+        'google' => [
+            'api_key' => env('GOOGLE_CAL_API_KEY'),
+        ]
+    ],
 ];
 ```
+
+## Usage
+
+1) Use an admin interface, artisan tinker session, DB seeder file or direct database call to add calendar sources. The main fields needed are:
+* Name
+* Type (currently, `GoogleCalendar` or `FacebookPage`)
+* Home URL
+* Location (either the Google Calendar calendar ID or the Facebook Page's numeric page ID)
+
+```php
+        DB::table('calendar_sources')->insert([
+            'name' => 'Your Local Government',
+            'type' => 'GoogleCalendar',
+            'home_url' => 'https://www.government.gov/',
+            'location' => 'googlecalendarid@gmail.com',
+        ]);
+
+        DB::table('calendar_sources')->insert([
+            'name' => 'Cool Nonprofit Organization',
+            'type' => 'FacebookPage',
+            'home_url' => 'https://www.facebook.com/orgname/',
+            'location' => '12345678',
+        ]);
+
+```
+
+2) The sources provided will be crawled according to the update frequency specified.
+3) Use the event data elsewhere within your Laravel application directly, or retrieve an ICS calendar feed of events at the `stream_url` location specified.
+
+Crawling issues, errors and notices will be written to the log stack configured. Consider using a Slack channel for convenience.
 
 ## Changelog
 
@@ -39,10 +84,6 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Contributing
 
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
 ## Credits
 
