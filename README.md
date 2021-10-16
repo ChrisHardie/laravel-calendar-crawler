@@ -72,8 +72,9 @@ return [
 
 ```
 
-2) The sources provided will be crawled according to the update frequency specified.
-3) Use the event data elsewhere within your Laravel application directly, or retrieve an ICS calendar feed of events at the `stream_url` location specified.
+2) If you specify any GoogleCalendar sources, you will need to [create an API key](https://console.cloud.google.com/apis/credentials) and then define a `GOOGLE_CAL_API_KEY` with that key as the value in your `.env` file.
+3) The sources provided will be crawled according to the update frequency specified.
+4) Use the event data elsewhere within your Laravel application directly, or retrieve an ICS calendar feed of events at the `stream_url` location specified.
 
 Crawling issues, errors and notices will be written to the log stack configured. Consider using a Slack channel for convenience.
 
