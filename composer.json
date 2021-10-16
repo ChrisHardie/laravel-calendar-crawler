@@ -17,11 +17,12 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
+        "ext-json": "*",
         "fabpot/goutte": "^4.0",
         "google/apiclient": "^2.0",
         "illuminate/contracts": "^8.37",
-        "spatie/laravel-package-tools": "^1.4.3",
-        "ext-json": "*"
+        "spatie/icalendar-generator": "^2.3",
+        "spatie/laravel-package-tools": "^1.4.3"
     },
     "require-dev": {
         "nunomaduro/collision": "^5.3",
