@@ -51,9 +51,20 @@ class Event extends Model
         return $this->belongsTo(CalendarSource::class);
     }
 
-    public function getDescriptionTextonlyAttribute()
+    public function getDescriptionTextonlyAttribute(): string
     {
         $html = new Html2Text($this->description);
         return $html->getText();
     }
+
+    public function getTitleWithSourceAttribute(): string
+    {
+        return sprintf('%s (%s)', $this->title, $this->calendarSource->name);
+    }
+
+    public function getUidAttribute(): string
+    {
+        return sprintf('%s-%s', e($this->source_internal_id), e($this->calendarSource->location));
+    }
+
 }

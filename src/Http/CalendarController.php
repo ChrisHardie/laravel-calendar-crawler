@@ -13,15 +13,24 @@ class CalendarController
     public function __invoke()
     {
         $calendar = Calendar::create()
-            ->name('Upcoming Events')
-            ->description('Description of Calendar');
+            ->name(config('calendar-crawler.calendar_name'))
+            ->description(config('calendar-crawler.calendar_description'));
 
         $events = \ChrisHardie\CalendarCrawler\Models\Event::all();
         foreach ($events as $event) {
             $ical_event = \Spatie\IcalendarGenerator\Components\Event::create()
-                ->name($event->title)
+                ->name($event->title_with_source)
+                ->uniqueIdentifier($event->uid)
                 ->createdAt($event->created_at)
                 ->startsAt($event->start_timestamp);
+
+            if (! empty($event->end_timestamp)) {
+                $ical_event->endsAt($event->end_timestamp);
+            }
+
+            if (! empty($event->url)) {
+                $ical_event->appendProperty(TextProperty::create('URL;VALUE=URI', $event->url));
+            }
 
             if (! empty($event->description)) {
                 $ical_event->appendProperty(
