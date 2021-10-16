@@ -20,6 +20,7 @@
         "ext-json": "*",
         "fabpot/goutte": "^4.0",
         "google/apiclient": "^2.0",
+        "html2text/html2text": "^4.3",
         "illuminate/contracts": "^8.37",
         "spatie/icalendar-generator": "^2.3",
         "spatie/laravel-package-tools": "^1.4.3"

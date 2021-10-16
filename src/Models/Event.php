@@ -2,12 +2,17 @@
 
 namespace ChrisHardie\CalendarCrawler\Models;
 
+use Html2Text\Html2Text;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
     use HasFactory;
+
+    protected $appends = [
+        'description_textonly',
+    ];
 
     protected $fillable = [
         'source_internal_id',
@@ -44,5 +49,11 @@ class Event extends Model
     public function calendarSource(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(CalendarSource::class);
+    }
+
+    public function getDescriptionTextonlyAttribute()
+    {
+        $html = new Html2Text($this->description);
+        return $html->getText();
     }
 }

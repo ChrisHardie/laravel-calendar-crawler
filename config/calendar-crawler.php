@@ -8,4 +8,7 @@ return [
     ],
     'default_update_frequency' => 720, // Refresh every 12 hours
 
+    // Default URL of calendar ICS feed
+    'stream_url' => '/calendar/calendar.ics',
+
 ];
