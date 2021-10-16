@@ -14,15 +14,16 @@ class CalendarSource extends Model
     protected $fillable = [
         'fail_count',
         'last_check_at',
-        'last_succeed_at',
+        'last_success_at',
         'last_fail_at',
         'last_fail_reason',
         'next_check_after',
+        'fail_count',
     ];
 
     protected $dates = [
         'last_check_at',
-        'last_succeed_at',
+        'last_success_at',
         'last_fail_at',
         'next_check_after',
     ];
