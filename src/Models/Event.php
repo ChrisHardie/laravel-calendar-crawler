@@ -46,6 +46,7 @@ class Event extends Model
     public function getDescriptionTextonlyAttribute(): string
     {
         $html = new Html2Text($this->description);
+
         return $html->getText();
     }
 
@@ -58,5 +59,4 @@ class Event extends Model
     {
         return sprintf('%s-%s', e($this->source_internal_id), e($this->calendarSource->location));
     }
-
 }

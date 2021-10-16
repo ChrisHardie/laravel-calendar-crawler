@@ -51,6 +51,4 @@ class CalendarCrawlerServiceProvider extends PackageServiceProvider
 
         return $this;
     }
-
-
 }
