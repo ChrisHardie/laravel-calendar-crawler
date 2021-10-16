@@ -16,6 +16,7 @@ class Event extends Model
 
     protected $fillable = [
         'source_internal_id',
+        'last_crawled_at',
         'title',
         'start_timestamp',
         'end_timestamp',
@@ -28,12 +29,6 @@ class Event extends Model
         'organizer_url',
         'status',
         'attachment_url',
-        'last_crawled_at',
-        'last_success_at',
-        'last_fail_at',
-        'last_fail_reason',
-        'next_check_after',
-        'fail_count',
         'url',
     ];
 
@@ -41,9 +36,6 @@ class Event extends Model
         'start_timestamp',
         'end_timestamp',
         'last_crawled_at',
-        'last_success_at',
-        'last_fail_at',
-        'next_check_after',
     ];
 
     public function calendarSource(): \Illuminate\Database\Eloquent\Relations\BelongsTo
