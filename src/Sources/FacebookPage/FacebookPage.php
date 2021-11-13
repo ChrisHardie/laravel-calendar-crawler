@@ -95,7 +95,7 @@ class FacebookPage extends BaseSource
         }
 
         // "day_time_sentence": "FRI, AUG 13 - AUG 22",
-        if (preg_match('/^(.*?) - \w{3} \d+$/', $event->day_time_sentence)) {
+        if (false !== strpos($event->day_time_sentence, ' - ')) {
             return null;
         }
 
@@ -103,11 +103,13 @@ class FacebookPage extends BaseSource
             '/^(.*?)( AND \d+ MORE)?$/',
             '/ AT /',
             '/UNK$/',
+            '/ (\d+) ([A-Z]{3})/',
         ];
         $event_text_replacements = [
             '\1',
             ' ',
             '-7',
+            ' \2 \1',
         ];
 
         $event_start_text = preg_replace(
