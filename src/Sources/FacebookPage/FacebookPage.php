@@ -38,6 +38,7 @@ class FacebookPage extends BaseSource
                 ->withUserAgent($userAgent)
                 ->withHeaders([
                     'Origin' => 'https://www.facebook.com/',
+                    'Accept-Language' => 'en_us',
                 ])
                 ->post($fbApiUrl, $postData)
                 ->throw()
