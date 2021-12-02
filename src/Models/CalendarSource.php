@@ -55,7 +55,7 @@ class CalendarSource extends Model
                 // Never been checked
                 ->whereNull('last_check_at')
                 // Haven't been checked in the last X minutes given sitewide update frequency
-                ->orWhereRaw('last_check_at < DATE_SUB(now(), INTERVAL frequency MINUTE)');
+                ->orWhereRaw('last_check_at < DATE_SUB(UTC_TIMESTAMP(), INTERVAL frequency MINUTE)');
         });
 
         // Sources where no next check is set or where it has passed.
