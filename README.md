@@ -47,6 +47,12 @@ return [
 ];
 ```
 
+You can add a web route for a calendar ICS feed of all stored events:
+
+```php
+Route::calendarstream();
+```
+
 ## Usage
 
 1) Use an admin interface, artisan tinker session, DB seeder file or direct database call to add calendar sources. The main fields needed are:
@@ -77,6 +83,26 @@ return [
 4) Use the event data elsewhere within your Laravel application directly, or retrieve an ICS calendar feed of events at the `stream_url` location specified.
 
 Crawling issues, errors and notices will be written to the log stack configured. Consider using a Slack channel for convenience.
+
+## Uninstalling
+
+Remove any web routes created during installation.
+
+Remove the package and any dependencies:
+
+```
+composer remove chrishardie/laravel-calendar-crawler
+```
+
+Remove `config/calendar-crawler.php`.
+
+Drop the related tables in a new migration:
+
+```php
+Schema::dropIfExists('calendar_sources');
+Schema::dropIfExists('events');
+```
+
 
 ## Changelog
 
